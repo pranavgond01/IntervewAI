@@ -28,20 +28,12 @@ export class AIService {
       RESUME_ANALYSIS_PROMPT + text,
     );
 
-    console.log("========== RAW GEMINI ==========");
+    console.log("========== RAW AI ==========");
     console.log(response);
     console.log("================================");
 
-    const clean = response
-      .replace(/```json/g, "")
-      .replace(/```/g, "")
-      .trim();
-
-    console.log("========== CLEAN ==========");
-    console.log(clean);
-    console.log("===========================");
-
-    return JSON.parse(clean);
+    const parsed = this.parseJson(response);
+    return parsed;
   } catch (err) {
     console.error("AI ANALYZE ERROR:", err);
     throw err;
@@ -63,12 +55,7 @@ async generateQuestion(
   const response =
     await this.groq.generate(prompt);
 
-  const clean = response
-    .replace(/```json/g, '')
-    .replace(/```/g, '')
-    .trim();
-
-  return JSON.parse(clean);
+  return this.parseJson(response);
 }
 
 
@@ -90,12 +77,7 @@ async generateFollowUpQuestion(
   const response =
     await this.groq.generate(prompt);
 
-  const clean = response
-    .replace(/```json/g, '')
-    .replace(/```/g, '')
-    .trim();
-
-  return JSON.parse(clean);
+  return this.parseJson(response);
 }
 
 
@@ -164,12 +146,7 @@ async evaluateAnswer(
   console.log(response);
   console.log("================================");
 
-  const clean = response
-    .replace(/```json/g, "")
-    .replace(/```/g, "")
-    .trim();
-
-  const report = JSON.parse(clean);
+  const report = this.parseJson(response);
 
   // Default values if AI leaves anything empty
   report.hireDecision ||= "Reject";
@@ -246,21 +223,26 @@ async evaluateAnswer(
 
 
   private parseJson(text: string): any {
-  try {
-    // Remove markdown code blocks if the AI returns them
-    const cleaned = text
-      .replace(/```json/g, "")
-      .replace(/```/g, "")
-      .trim();
+    try {
+      const cleaned = text
+        .replace(/```json/gi, "")
+        .replace(/```/g, "")
+        .trim();
 
-    return JSON.parse(cleaned);
-  } catch (error) {
-    console.error("Failed to parse AI JSON:");
-    console.error(text);
+      const firstBrace = cleaned.indexOf('{');
+      const lastBrace = cleaned.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+        return JSON.parse(cleaned.substring(firstBrace, lastBrace + 1));
+      }
 
-    throw new Error("Invalid JSON returned by AI");
+      return JSON.parse(cleaned);
+    } catch (error) {
+      console.error("Failed to parse AI JSON:");
+      console.error(text);
+
+      throw new Error("Invalid JSON returned by AI");
+    }
   }
-}
 
 
 

@@ -21,7 +21,7 @@ async function bootstrap(): Promise<void> {
 
   const configService = app.get(ConfigService);
 
-  const port = configService.get<number>('PORT', 5000);
+  const port = process.env.PORT || configService.get<number>('PORT', 5000);
   const clientUrl = configService.get<string>(
     'CLIENT_URL',
     'http://localhost:3000',
@@ -34,7 +34,22 @@ async function bootstrap(): Promise<void> {
   app.use(cookieParser());
 
   app.enableCors({
-    origin: clientUrl,
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      // Allow requests with no origin (like mobile apps, curl, or postman)
+      if (!origin) return callback(null, true);
+
+      const allowed = [clientUrl, 'http://localhost:3000'];
+      if (clientUrl.includes(',')) {
+        clientUrl.split(',').forEach((url) => allowed.push(url.trim()));
+      }
+
+      if (allowed.includes('*') || allowed.includes(origin) || origin.endsWith('.railway.app') || origin.endsWith('.vercel.app')) {
+        return callback(null, true);
+      }
+
+      // Default allow with reflection
+      return callback(null, true);
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -79,7 +94,7 @@ app.useGlobalFilters(
 
   SwaggerModule.setup('docs', app, document);
 
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
 
   console.log(
     `🚀 InterviewAI Server running on http://localhost:${port}`,
