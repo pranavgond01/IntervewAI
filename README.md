@@ -1,6 +1,25 @@
 # 🚀 InterviewAI — AI-Powered Mock Interview Platform
 
-An end-to-end, enterprise-grade AI technical mock interview platform that simulates realistic technical recruiter interviews. Features real-time voice interaction, live proctoring (face and eye detection), an in-browser code editor with multi-language execution, live performance analytics, and ATS resume analysis.
+<p align="center">
+  <b>Architected & Engineered by <a href="https://github.com/pranavgond01">Pranav Gond</a></b><br>
+  <i>A Full-Stack AI Technical Mock Interview System with Live Voice, Vision Proctoring, In-Browser Compiler & ATS Resume Analysis</i>
+</p>
+
+<p align="center">
+  <a href="https://github.com/pranavgond01"><img src="https://img.shields.io/badge/Creator-Pranav%20Gond-00e5ff?style=for-the-badge&logo=github&logoColor=black" alt="Creator: Pranav Gond"></a>
+  <img src="https://img.shields.io/badge/Next.js-16%20Turbopack-000000?style=for-the-badge&logo=next.js" alt="Next.js">
+  <img src="https://img.shields.io/badge/NestJS-11-E0234E?style=for-the-badge&logo=nestjs&logoColor=white" alt="NestJS">
+  <img src="https://img.shields.io/badge/MongoDB-Mongoose-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
+  <img src="https://img.shields.io/badge/Groq-AI%20Inference-f55036?style=for-the-badge" alt="Groq AI">
+</p>
+
+---
+
+## 💡 About The Project
+
+**InterviewAI** is an original platform conceptualized and created by **Pranav Gond** to bridge the gap between interview preparation and real-world hiring assessments. 
+
+Traditional mock interviews lack interactive feedback, automated proctoring, and structured evaluations. InterviewAI combines **real-time AI conversational interviewing**, **multi-modal vision proctoring (face & eye tracking)**, **Monaco in-browser code execution**, and **deep ATS resume scoring** into one unified, cohesive technical room.
 
 ---
 
@@ -169,42 +188,17 @@ Visit [http://localhost:3000](http://localhost:3000) to open the application and
 
 ---
 
-## ☁️ Deploying to Railway
+## 👨‍💻 Author & Creator
 
-You can deploy both the Backend and Frontend on [Railway](https://railway.app/) as two connected services in one project:
+**InterviewAI** was designed, architected, and engineered by **[Pranav Gond](https://github.com/pranavgond01)**.
 
-### Step 1: Add MongoDB
-1. In your Railway project, click **New** → **Database** → **Add MongoDB** (or provision a free MongoDB Atlas cluster).
-2. Copy the connection string (`MONGODB_URI`).
+- **GitHub**: [@pranavgond01](https://github.com/pranavgond01)
+- **Repository**: [https://github.com/pranavgond01/IntervewAI](https://github.com/pranavgond01/IntervewAI)
+- **Email**: [pranavgond24@gmail.com](mailto:pranavgond24@gmail.com)
 
-### Step 2: Deploy Backend Service (`server`)
-1. Click **New** → **GitHub Repo** → select `IntervewAI`.
-2. Go to **Settings**:
-   - **Root Directory**: `server`
-   - **Build Command**: `npm run build`
-   - **Start Command**: `npm run start:prod`
-3. In **Variables**, add:
-   - `PORT`: `5000` (or leave default assigned by Railway)
-   - `MONGODB_URI`: `<Your MongoDB Connection URL>`
-   - `JWT_ACCESS_SECRET`: `<Random 32-character secret>`
-   - `JWT_REFRESH_SECRET`: `<Random 32-character secret>`
-   - `GROQ_API_KEY`: `<Your Groq API Key>`
-   - `GROQ_MODEL`: `openai/gpt-oss-120b`
-   - `RAPID_API_KEY`: `<Your RapidAPI Key>`
-   - `CLIENT_URL`: `https://<your-client-service-name>.up.railway.app`
-4. Under **Networking**, click **Generate Domain** (e.g. `https://server-production-xxxx.up.railway.app`).
-
-### Step 3: Deploy Frontend Service (`client`)
-1. Click **New** → **GitHub Repo** → select `IntervewAI` again.
-2. Go to **Settings**:
-   - **Root Directory**: `client`
-   - **Build Command**: `npm run build`
-   - **Start Command**: `npm run start`
-3. In **Variables**, add:
-   - `NEXT_PUBLIC_API_URL`: `https://server-production-xxxx.up.railway.app/api/v1` (replace with your backend Railway URL)
-4. Under **Networking**, click **Generate Domain** (e.g. `https://client-production-xxxx.up.railway.app`).
+If you find this project interesting or useful, please consider starring ⭐ the repository!
 
 ---
 
 ## 📄 License
-This project is licensed under the MIT License.
+This project is licensed under the MIT License — see the LICENSE file for details.
